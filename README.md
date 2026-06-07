@@ -6,6 +6,12 @@ Built as a portfolio project demonstrating core SOC/SIEM concepts.
 
 ---
 
+## Dashboard Screenshot
+
+![SOC Threat Detection System Dashboard](dashboard_screenshot.png)
+
+---
+
 ## Features
 
 - **Log ingestion** — parses Linux auth logs, firewall logs, and Apache/Nginx web logs
@@ -81,6 +87,10 @@ Added analyst workflow to the SOC dashboard. Security alerts can now be updated 
 ### Week 5-6 — Realistic Dataset & Log Generator
 
 Built a Python log generator script (`generate_logs.py`) that simulates realistic security attack scenarios instead of relying on a downloaded dataset. The script generates 4000+ log lines across three log types — auth, firewall, and web server logs. Five attack scenarios are simulated: SSH brute force attacks, credential stuffing from multiple IPs, after-hours logins, port scanning reconnaissance, and web application probing. Normal legitimate traffic is mixed in at 60-75% to make the dataset realistic. Running the generator and ingesting the logs produces a dashboard showing 4000+ real-looking security events with multiple alerts firing automatically.
+
+### Week 7-8 — Polish & Portfolio Ready
+
+Added dashboard screenshot to README. Cleaned up repository — removed compiled Python cache files, database file, and helper scripts from version control. Added `.gitignore` to prevent junk files from being committed in future. Project is now fully portfolio-ready with clean commit history, comprehensive documentation, and a working live demo.
 
 ---
 
