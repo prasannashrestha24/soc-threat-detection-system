@@ -31,6 +31,15 @@ def update_alert_status(request, alert_id):
     return redirect('dashboard')
 
 
+def save_analyst_note(request, alert_id):
+    if request.method == 'POST':
+        alert = get_object_or_404(Alert, id=alert_id)
+        note = request.POST.get('analyst_notes', '').strip()
+        alert.analyst_notes = note
+        alert.save()
+    return redirect('dashboard')
+
+
 def export_alerts_csv(request):
     timestamp = timezone.now().strftime('%Y%m%d_%H%M%S')
     filename = f"soc_alerts_{timestamp}.csv"
@@ -39,7 +48,7 @@ def export_alerts_csv(request):
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
     writer = csv.writer(response)
-    writer.writerow(['ID', 'Severity', 'Rule', 'Source IP', 'Username', 'Description', 'Status', 'Triggered At'])
+    writer.writerow(['ID', 'Severity', 'Rule', 'Source IP', 'Username', 'Description', 'Status', 'Analyst Notes', 'Triggered At'])
 
     for alert in Alert.objects.all():
         writer.writerow([
@@ -50,6 +59,7 @@ def export_alerts_csv(request):
             alert.username or '—',
             alert.description,
             alert.get_status_display(),
+            alert.analyst_notes or '',
             alert.triggered_at.strftime('%Y-%m-%d %H:%M:%S'),
         ])
 

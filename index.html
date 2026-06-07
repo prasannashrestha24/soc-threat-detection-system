@@ -33,12 +33,6 @@
     .status-select { background: #1c2128; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 4px 8px; font-size: 0.78rem; cursor: pointer; }
     .btn-update { background: #238636; color: #fff; border: none; border-radius: 6px; padding: 4px 12px; font-size: 0.78rem; cursor: pointer; }
     .btn-update:hover { background: #2ea043; }
-    .notes-form { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
-    .notes-input { background: #1c2128; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 4px 8px; font-size: 0.78rem; width: 260px; }
-    .notes-input:focus { outline: none; border-color: #58a6ff; }
-    .btn-note { background: #6e40c9; color: #fff; border: none; border-radius: 6px; padding: 4px 12px; font-size: 0.78rem; cursor: pointer; }
-    .btn-note:hover { background: #8957e5; }
-    .existing-note { font-size: 0.78rem; color: #8b949e; font-style: italic; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -64,7 +58,7 @@
     <thead>
       <tr>
         <th>Severity</th><th>Rule</th><th>Source IP</th><th>Username</th>
-        <th>Description</th><th>Status</th><th>Time</th><th>Actions</th>
+        <th>Description</th><th>Status</th><th>Time</th><th>Update</th>
       </tr>
     </thead>
     <tbody>
@@ -88,16 +82,6 @@
             </select>
             <button type="submit" class="btn-update">Update</button>
           </form>
-          <form method="POST" action="{% url 'save_analyst_note' alert.id %}" class="notes-form">
-            {% csrf_token %}
-            <input type="text" name="analyst_notes" class="notes-input"
-              placeholder="Add analyst note..."
-              value="{{ alert.analyst_notes }}">
-            <button type="submit" class="btn-note">Save Note</button>
-          </form>
-          {% if alert.analyst_notes %}
-          <div class="existing-note">&#128203; {{ alert.analyst_notes }}</div>
-          {% endif %}
         </td>
       </tr>
       {% endfor %}
