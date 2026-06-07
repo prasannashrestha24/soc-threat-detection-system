@@ -33,21 +33,6 @@
     .status-select { background: #1c2128; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 4px 8px; font-size: 0.78rem; cursor: pointer; }
     .btn-update { background: #238636; color: #fff; border: none; border-radius: 6px; padding: 4px 12px; font-size: 0.78rem; cursor: pointer; }
     .btn-update:hover { background: #2ea043; }
-    .notes-form { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
-    .notes-input { background: #1c2128; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 4px 8px; font-size: 0.78rem; width: 260px; }
-    .notes-input:focus { outline: none; border-color: #58a6ff; }
-    .btn-note { background: #6e40c9; color: #fff; border: none; border-radius: 6px; padding: 4px 12px; font-size: 0.78rem; cursor: pointer; }
-    .btn-note:hover { background: #8957e5; }
-    .existing-note { font-size: 0.78rem; color: #8b949e; font-style: italic; margin-top: 4px; }
-    .filter-bar { display: flex; gap: 12px; align-items: center; padding: 0 32px 20px; flex-wrap: wrap; }
-    .filter-select { background: #1c2128; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; }
-    .filter-select:focus { outline: none; border-color: #58a6ff; }
-    .btn-filter { background: #1f6feb; color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; }
-    .btn-filter:hover { background: #388bfd; }
-    .btn-clear { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; text-decoration: none; }
-    .btn-clear:hover { background: #30363d; }
-    .filter-label { font-size: 0.85rem; color: #8b949e; }
-    .active-filter { font-size: 0.78rem; color: #58a6ff; margin-left: 4px; }
   </style>
 </head>
 <body>
@@ -58,7 +43,6 @@
   </div>
   <a href="{% url 'export_alerts_csv' %}" class="btn-export">Export Alerts CSV</a>
 </header>
-
 <div class="stats">
   <div class="stat-card"><div class="number">{{ total_logs }}</div><div class="label">Total Log Entries</div></div>
   <div class="stat-card"><div class="number">{{ total_alerts }}</div><div class="label">Total Alerts</div></div>
@@ -67,54 +51,14 @@
   <div class="stat-card"><div class="number medium">{{ medium_count }}</div><div class="label">Medium</div></div>
   <div class="stat-card"><div class="number">{{ open_alerts }}</div><div class="label">Open Alerts</div></div>
 </div>
-
 <div class="section">
-  <h2>Active Alerts
-    {% if severity_filter or status_filter or rule_filter %}
-    <span class="active-filter">— filtered</span>
-    {% endif %}
-  </h2>
-
-  <!-- Filter Bar -->
-  <form method="GET" action="/" style="margin-bottom: 16px;">
-    <div class="filter-bar" style="padding: 0;">
-      <span class="filter-label">Filter by:</span>
-
-      <select name="severity" class="filter-select">
-        <option value="">All Severities</option>
-        <option value="critical" {% if severity_filter == "critical" %}selected{% endif %}>Critical</option>
-        <option value="high"     {% if severity_filter == "high" %}selected{% endif %}>High</option>
-        <option value="medium"   {% if severity_filter == "medium" %}selected{% endif %}>Medium</option>
-        <option value="low"      {% if severity_filter == "low" %}selected{% endif %}>Low</option>
-      </select>
-
-      <select name="status" class="filter-select">
-        <option value="">All Statuses</option>
-        <option value="open"           {% if status_filter == "open" %}selected{% endif %}>Open</option>
-        <option value="investigating"  {% if status_filter == "investigating" %}selected{% endif %}>Investigating</option>
-        <option value="resolved"       {% if status_filter == "resolved" %}selected{% endif %}>Resolved</option>
-        <option value="false_positive" {% if status_filter == "false_positive" %}selected{% endif %}>False Positive</option>
-      </select>
-
-      <select name="rule" class="filter-select">
-        <option value="">All Rules</option>
-        <option value="brute_force"       {% if rule_filter == "brute_force" %}selected{% endif %}>Brute Force</option>
-        <option value="after_hours_login" {% if rule_filter == "after_hours_login" %}selected{% endif %}>After Hours Login</option>
-        <option value="port_scan"         {% if rule_filter == "port_scan" %}selected{% endif %}>Port Scan</option>
-        <option value="multiple_failures" {% if rule_filter == "multiple_failures" %}selected{% endif %}>Credential Stuffing</option>
-      </select>
-
-      <button type="submit" class="btn-filter">Apply Filter</button>
-      <a href="/" class="btn-clear">Clear</a>
-    </div>
-  </form>
-
+  <h2>Active Alerts</h2>
   {% if alerts %}
   <table>
     <thead>
       <tr>
         <th>Severity</th><th>Rule</th><th>Source IP</th><th>Username</th>
-        <th>Description</th><th>Status</th><th>Time</th><th>Actions</th>
+        <th>Description</th><th>Status</th><th>Time</th><th>Update</th>
       </tr>
     </thead>
     <tbody>
@@ -131,33 +75,22 @@
           <form method="POST" action="{% url 'update_alert_status' alert.id %}" class="status-form">
             {% csrf_token %}
             <select name="status" class="status-select">
-              <option value="open"           {% if alert.status == "open" %}selected{% endif %}>Open</option>
-              <option value="investigating"  {% if alert.status == "investigating" %}selected{% endif %}>Investigating</option>
-              <option value="resolved"       {% if alert.status == "resolved" %}selected{% endif %}>Resolved</option>
+              <option value="open" {% if alert.status == "open" %}selected{% endif %}>Open</option>
+              <option value="investigating" {% if alert.status == "investigating" %}selected{% endif %}>Investigating</option>
+              <option value="resolved" {% if alert.status == "resolved" %}selected{% endif %}>Resolved</option>
               <option value="false_positive" {% if alert.status == "false_positive" %}selected{% endif %}>False Positive</option>
             </select>
             <button type="submit" class="btn-update">Update</button>
           </form>
-          <form method="POST" action="{% url 'save_analyst_note' alert.id %}" class="notes-form">
-            {% csrf_token %}
-            <input type="text" name="analyst_notes" class="notes-input"
-              placeholder="Add analyst note..."
-              value="{{ alert.analyst_notes }}">
-            <button type="submit" class="btn-note">Save Note</button>
-          </form>
-          {% if alert.analyst_notes %}
-          <div class="existing-note">&#128203; {{ alert.analyst_notes }}</div>
-          {% endif %}
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
   {% else %}
-  <div class="empty">No alerts match the current filter.</div>
+  <div class="empty">No alerts yet. Ingest some logs to get started.</div>
   {% endif %}
 </div>
-
 <div class="section">
   <h2>Recent Log Entries (last 20)</h2>
   {% if recent_logs %}

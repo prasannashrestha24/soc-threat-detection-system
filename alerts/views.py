@@ -7,15 +7,32 @@ from logs.models import LogEntry
 
 def dashboard(request):
     alerts = Alert.objects.all()
+
+    # Filtering
+    severity_filter = request.GET.get('severity', '')
+    status_filter   = request.GET.get('status', '')
+    rule_filter     = request.GET.get('rule', '')
+
+    if severity_filter:
+        alerts = alerts.filter(severity=severity_filter)
+    if status_filter:
+        alerts = alerts.filter(status=status_filter)
+    if rule_filter:
+        alerts = alerts.filter(rule_name=rule_filter)
+
+    all_alerts = Alert.objects.all()
     context = {
-        'alerts':        alerts,
-        'recent_logs':   LogEntry.objects.all()[:20],
-        'total_logs':    LogEntry.objects.count(),
-        'total_alerts':  alerts.count(),
-        'critical_count':alerts.filter(severity='critical').count(),
-        'high_count':    alerts.filter(severity='high').count(),
-        'medium_count':  alerts.filter(severity='medium').count(),
-        'open_alerts':   alerts.filter(status='open').count(),
+        'alerts':          alerts,
+        'recent_logs':     LogEntry.objects.all()[:20],
+        'total_logs':      LogEntry.objects.count(),
+        'total_alerts':    all_alerts.count(),
+        'critical_count':  all_alerts.filter(severity='critical').count(),
+        'high_count':      all_alerts.filter(severity='high').count(),
+        'medium_count':    all_alerts.filter(severity='medium').count(),
+        'open_alerts':     all_alerts.filter(status='open').count(),
+        'severity_filter': severity_filter,
+        'status_filter':   status_filter,
+        'rule_filter':     rule_filter,
     }
     return render(request, 'dashboard/index.html', context)
 
