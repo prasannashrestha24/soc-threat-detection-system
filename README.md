@@ -22,12 +22,16 @@ Built as a portfolio project demonstrating core SOC/SIEM concepts.
   - Credential stuffing detection
 - **Security dashboard** — real-time alert display with severity classification
 - **Alert management** — open/investigating/resolved/false positive status tracking
+- **Analyst notes** — document incident response actions on each alert
+- **Alert filtering** — filter by severity, status, and rule type
+- **Statistics charts** — visual bar and doughnut charts for severity, rule, and status breakdowns
 - **CSV export** — download all alerts with auto-generated timestamp filename
 - **Realistic log generator** — Python script simulating 4000+ log lines with real attack scenarios
 
 ## Tech Stack
 
 - Python 3, Django, SQLite
+- Chart.js (statistics visualisation)
 - Custom log parsers (regex-based)
 - Django management commands for log ingestion
 - HTML/CSS dashboard (dark SOC theme)
@@ -68,8 +72,8 @@ soc-threat-detection-system/
 ├── alerts/
 │   ├── models.py                      # Alert model
 │   ├── rules.py                       # Detection rules engine
-│   └── views.py                       # Dashboard + CSV export views
-├── templates/dashboard/               # Dashboard UI
+│   └── views.py                       # Dashboard + all views
+├── templates/dashboard/               # Dashboard UI with Chart.js
 ├── sample_logs/                       # Test log files
 └── generate_logs.py                   # Realistic log generator script
 ```
@@ -77,20 +81,19 @@ soc-threat-detection-system/
 ## Development Log
 
 ### Week 1-2 — Project Setup & Initial Deployment
-
-Built the core Django project structure with two apps — `logs` for ingesting and parsing security log files, and `alerts` for storing and displaying security alerts. Implemented custom log parsers using regex to handle three log formats: Linux auth logs, firewall logs, and Apache/Nginx web server logs. Created four automated detection rules covering brute force attacks, port scanning, credential stuffing, and after-hours logins. Built a dark-themed SOC dashboard displaying real-time alerts with severity classification. Pushed the full project to GitHub with clean commit history.
+Built the core Django project structure with two apps — `logs` for ingesting and parsing security log files, and `alerts` for storing and displaying security alerts. Implemented custom log parsers using regex to handle three log formats: Linux auth logs, firewall logs, and Apache/Nginx web server logs. Created four automated detection rules covering brute force attacks, port scanning, credential stuffing, and after-hours logins. Built a dark-themed SOC dashboard displaying real-time alerts with severity classification.
 
 ### Week 3-4 — Alert Management & Reporting
-
 Added analyst workflow to the SOC dashboard. Security alerts can now be updated through four status stages — Open, Investigating, Resolved, and False Positive — mirroring real SOC triage processes. Added a one-click CSV export feature that downloads all current alerts with auto-generated timestamp filenames, enabling incident reporting and audit trail documentation.
 
 ### Week 5-6 — Realistic Dataset & Log Generator
-
-Built a Python log generator script (`generate_logs.py`) that simulates realistic security attack scenarios instead of relying on a downloaded dataset. The script generates 4000+ log lines across three log types — auth, firewall, and web server logs. Five attack scenarios are simulated: SSH brute force attacks, credential stuffing from multiple IPs, after-hours logins, port scanning reconnaissance, and web application probing. Normal legitimate traffic is mixed in at 60-75% to make the dataset realistic. Running the generator and ingesting the logs produces a dashboard showing 4000+ real-looking security events with multiple alerts firing automatically.
+Built a Python log generator script (`generate_logs.py`) that simulates realistic security attack scenarios. The script generates 4000+ log lines across three log types. Five attack scenarios are simulated: SSH brute force attacks, credential stuffing from multiple IPs, after-hours logins, port scanning reconnaissance, and web application probing. Normal legitimate traffic is mixed in at 60-75% to make the dataset realistic.
 
 ### Week 7-8 — Polish & Portfolio Ready
+Added dashboard screenshot to README. Cleaned up repository with proper `.gitignore`. Project fully portfolio-ready with clean commit history and comprehensive documentation.
 
-Added dashboard screenshot to README. Cleaned up repository — removed compiled Python cache files, database file, and helper scripts from version control. Added `.gitignore` to prevent junk files from being committed in future. Project is now fully portfolio-ready with clean commit history, comprehensive documentation, and a working live demo.
+### Extended Features — Analyst Tools & Visualisation
+Added three additional features: analyst notes for documenting incident response actions on each alert, alert filtering by severity/status/rule type, and statistics charts (severity bar chart, rule bar chart, status doughnut chart) using Chart.js.
 
 ---
 
