@@ -1,0 +1,14 @@
+Jun  3 02:10:01 server sshd[1001]: Failed password for root from 203.0.113.10 port 22 ssh2
+Jun  3 02:10:03 server sshd[1002]: Failed password for root from 203.0.113.10 port 22 ssh2
+Jun  3 02:10:05 server sshd[1003]: Failed password for root from 203.0.113.10 port 22 ssh2
+Jun  3 02:10:07 server sshd[1004]: Failed password for root from 203.0.113.10 port 22 ssh2
+Jun  3 02:10:09 server sshd[1005]: Failed password for root from 203.0.113.10 port 22 ssh2
+Jun  3 02:10:11 server sshd[1006]: Failed password for root from 203.0.113.10 port 22 ssh2
+Jun  3 02:10:13 server sshd[1007]: Failed password for admin from 203.0.113.10 port 22 ssh2
+Jun  3 02:12:00 server sshd[1008]: Accepted password for deploy from 10.0.0.5 port 22 ssh2
+Jun  3 03:45:00 server sshd[1009]: Accepted password for jsmith from 198.51.100.22 port 22 ssh2
+Jun  3 08:30:00 server sshd[1010]: Accepted password for prasanna from 10.0.0.8 port 22 ssh2
+Jun  3 02:00:00 server sshd[1011]: Failed password for jsmith from 192.0.2.1 port 22 ssh2
+Jun  3 02:01:00 server sshd[1012]: Failed password for jsmith from 192.0.2.2 port 22 ssh2
+Jun  3 02:02:00 server sshd[1013]: Failed password for jsmith from 192.0.2.3 port 22 ssh2
+Jun  3 02:03:00 server sshd[1014]: Invalid user testuser from 203.0.113.99 port 22 ssh2
