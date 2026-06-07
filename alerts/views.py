@@ -1,4 +1,5 @@
 import csv
+import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.utils import timezone
@@ -21,6 +22,31 @@ def dashboard(request):
         alerts = alerts.filter(rule_name=rule_filter)
 
     all_alerts = Alert.objects.all()
+
+    # Chart data — alerts by severity
+    severity_data = {
+        'Critical': all_alerts.filter(severity='critical').count(),
+        'High':     all_alerts.filter(severity='high').count(),
+        'Medium':   all_alerts.filter(severity='medium').count(),
+        'Low':      all_alerts.filter(severity='low').count(),
+    }
+
+    # Chart data — alerts by rule
+    rule_data = {
+        'Brute Force':        all_alerts.filter(rule_name='brute_force').count(),
+        'After Hours Login':  all_alerts.filter(rule_name='after_hours_login').count(),
+        'Port Scan':          all_alerts.filter(rule_name='port_scan').count(),
+        'Credential Stuffing':all_alerts.filter(rule_name='multiple_failures').count(),
+    }
+
+    # Chart data — alerts by status
+    status_data = {
+        'Open':          all_alerts.filter(status='open').count(),
+        'Investigating': all_alerts.filter(status='investigating').count(),
+        'Resolved':      all_alerts.filter(status='resolved').count(),
+        'False Positive':all_alerts.filter(status='false_positive').count(),
+    }
+
     context = {
         'alerts':          alerts,
         'recent_logs':     LogEntry.objects.all()[:20],
@@ -33,6 +59,9 @@ def dashboard(request):
         'severity_filter': severity_filter,
         'status_filter':   status_filter,
         'rule_filter':     rule_filter,
+        'severity_data':   json.dumps(severity_data),
+        'rule_data':       json.dumps(rule_data),
+        'status_data':     json.dumps(status_data),
     }
     return render(request, 'dashboard/index.html', context)
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+content = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -260,4 +260,8 @@ new Chart(document.getElementById('statusChart'), {
 });
 </script>
 </body>
-</html>
+</html>"""
+
+with open('templates/dashboard/index.html', 'w', encoding='utf-8') as f:
+    f.write(content)
+print("Done - file written successfully")
